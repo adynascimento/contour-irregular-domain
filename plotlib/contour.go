@@ -41,7 +41,7 @@ func (plt *plotParameters) Save(name string) {
 	p := plot.New()
 
 	// make a heatmap plotter
-	plt.contourPlot(p) 
+	plt.contourPlot(p)
 
 	// save the plot to a PNG file.
 	xwdith := font.Length(plt.figSize.xwidth) * vg.Centimeter
@@ -82,46 +82,4 @@ func (plt *plotParameters) contourPlot(p *plot.Plot) {
 	p.X.Padding = 0
 	p.Y.Padding = 0
 	p.Add(raster)
-}
-
-func Contour(mesh numerics.Mesh, z *mat.Dense, colorLevels int, gradient colorgrad.Gradient, name string) {
-	p := plot.New()
-	m := unitGrid{x: mesh.X, y: mesh.Y, Data: z}
-
-	pal := colorsGradient{ColorList: gradient.Colors(uint(colorLevels))}
-	heatMap := plotter.NewHeatMap(m, pal)
-	heatMap.NaN = color.Transparent
-	heatMap.Rasterized = true
-	p.BackgroundColor = color.Transparent
-	p.HideAxes()
-	p.X.Padding = 0
-	p.Y.Padding = 0
-	p.Add(heatMap)
-	saveImage(8, 8, name, p)
-}
-
-func saveImage(width, height int, name string, p *plot.Plot) {
-	c := vgimg.PngCanvas{
-		Canvas: vgimg.NewWith(
-			vgimg.UseWH(font.Length(width)*vg.Centimeter, font.Length(height)*vg.Centimeter),
-			vgimg.UseBackgroundColor(color.Transparent),
-		),
-	}
-	p.Draw(draw.New(c))
-
-	f, err := os.Create(name)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
-	_, err = c.WriteTo(f)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = f.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
 }

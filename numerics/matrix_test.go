@@ -12,7 +12,6 @@ import (
 )
 
 func TestMeshgrid(t *testing.T) {
-
 	cases := []struct {
 		Description  string
 		MultiPolygon orb.MultiPolygon
@@ -56,7 +55,6 @@ func TestMeshgrid(t *testing.T) {
 }
 
 func TestPopulateMatrix(t *testing.T) {
-
 	cases := []struct {
 		Description  string
 		MultiPolygon orb.MultiPolygon
