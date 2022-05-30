@@ -35,6 +35,7 @@ func main() {
 	plt := plotlib.NewPlot()
 	plt.FigSize(8, 8)
 	plt.Contour(mesh, numerics.FlipVertically(matrix), 15, colorgrad.Turbo())
+	plt.Colorbar()
 	plt.Save("triangle.png")
 
 }

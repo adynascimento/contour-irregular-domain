@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/mazznoer/colorgrad"
+	"gonum.org/v1/plot/palette/moreland"
 	"gonum.org/v1/gonum/mat"
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/font"
@@ -64,6 +65,24 @@ func (plt *plotParameters) Save(name string) {
 	_, err = c.WriteTo(f)
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func (plt *plotParameters) Colorbar() {
+	// create a new plot
+	p := plot.New()
+	p.BackgroundColor = color.Transparent
+	p.HideY()
+	p.X.Padding = 0
+	p.Y.Padding = 0
+	
+	cb := &plotter.ColorBar{ColorMap: moreland.SmoothBlueRed()}
+	cb.ColorMap.SetMin(mat.Min(plt.contourData.z))
+	cb.ColorMap.SetMax(mat.Max(plt.contourData.z))
+	p.Add(cb)
+
+	if err := p.Save(300, 35, "colorbar.png"); err != nil {
+		log.Panic(err)
 	}
 }
 
